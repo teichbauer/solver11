@@ -1,3 +1,8 @@
+2021-03-23->0.166
+- SatNode now holds a class variable .maxnov. And a method: is_top()
+- new class PathManager, an inst of it attached to each tnode, if its
+  holder snode is not top-level.
+- TBD: impl. and test
 2021-03-22->0.165
 - solver11. Based on solver10/2021-03-22->0.164
 2021-03-22->0.164

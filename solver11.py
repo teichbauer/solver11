@@ -23,6 +23,7 @@ def process(cnfname):
     vkm = make_vkm(cnfname)
     satslots = list(range(vkm.nov))
     sh = SatHolder(satslots)
+    SatNode.maxnov = sh.ln
 
     sn = SatNode(None, sh, vkm)
     while sn.__class__.__name__ == 'SatNode':  # if EndNodeManager: stop

@@ -7,6 +7,7 @@ from tnode import TNode
 
 class SatNode:
     debug = False
+    maxnov = 0
 
     def __init__(self, parent, sh, vkm):
         self.parent = parent
@@ -18,6 +19,9 @@ class SatNode:
         self.next = None
         self.done = False
         self.prepare()
+
+    def is_top(self):
+        return self.nov == SatNode.maxnov
 
     def prepare(self):
         choice = self.vkm.bestchoice()
@@ -95,3 +99,4 @@ class SatNode:
                 t = self.parent.chdic.pop(hv, None)
                 if t:
                     TNode.repo.pop(t.name, None)
+        x = 1
