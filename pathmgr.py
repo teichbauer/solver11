@@ -8,8 +8,8 @@ class PathManager:
     #   Each holder-parent(hp) has .chdic:{<v>:<tn>,..}, if hp isn't top-level,
     #   each tn has pthmgr too.
     # Such a tnode has self.pthmgr(instance of PathManager class), with *.dic:
-    #   {<vkey>:<vkdic>,...}, where <vkey> is concadinated key:
-    #   <tnode.ch-val>-<hp.chdic[v]-tn.name>-<tn.pthmgr-key>... if hp isnt top.
+    #   {<vkey>:<vkdic>,...}, where <vkey> is concadinated key(hp isnt top):
+    #   <tnode.val>-<tn.val>-<tn.val>... Here last tn is top-level
     #   if hp is top: <tnode.ch-val>-<hp.chdic[v].name>.
     # and <vkdic> is the result of mergings of all tn.vkdic along the way, if
     # the merging is validated. If merging not validated, then this
@@ -26,7 +26,7 @@ class PathManager:
                 if tn.check_sat(tnode.hsat, True):
                     vk12dic = tnode.find_path_vk12dic(tn)
                     if vk12dic:
-                        name = f'{tn.name}-{tn.name}'
+                        name = f'{self.tnode.val}-{tn.val}'
                         self.dic[name] = vk12dic
         else:  # holder.parent is not top-level snode, its tnodes has pthmgr
             vkd_lst = []
@@ -37,7 +37,7 @@ class PathManager:
                 for key, vkd in pths.items():
                     vkd = self.extend_vkd(tn.sh, vkd)
                     if vkd:
-                        name = f'{self.tnode.name}-{key}'
+                        name = f'{self.tnode.val}-{key}'
                         self.dic[name] = vkd
 
     def verified_paths(self, sdic):

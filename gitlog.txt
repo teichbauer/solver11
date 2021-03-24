@@ -1,3 +1,7 @@
+2021-03-24->0.168
+- pathmgr.dic key is a chain of(concadinated)tn.val joined by '-'
+- progress on pathmgr/chdic management in satnode. restrict_chs will be 
+  obsolete after testing/verifying
 2021-03-24->0.167
 - progress in pathmgr.
 2021-03-23->0.166
