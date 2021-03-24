@@ -3,6 +3,7 @@ from satholder import SatHolder
 from TransKlauseEngine import TxEngine
 from endnodemgr import EndNodeManager
 from tnode import TNode
+from pathmgr import PathManager
 
 
 class SatNode:
@@ -40,7 +41,8 @@ class SatNode:
         # after tx_vkm.morph, tx_vkm only has (.vkdic) vk3 left, if any
         # and tx_vkm.nov decreased by 3, used in spawning self.next
         self.chdic = self.tx_vkm.morph(self)
-        self.restrict_chs()
+        # self.restrict_chs()
+        self.make_paths()
         if self.debug:
             vk3cnt = len(self.vkm.vkdic)
             restvk3cnt = len(self.tx_vkm.vkdic)
@@ -67,6 +69,12 @@ class SatNode:
         else:
             self.next = SatNode(self, self.next_sh.clone(), self.tx_vkm)
         return self.next
+
+    def make_paths(self):
+        if not self.parent: return
+        for val, tnode in self.chdic.items():
+            tnode.pthmgr = PathManager(tnode)
+
 
     def restrict_chs(self):
         ''' for every child C in chdic, check which children of 

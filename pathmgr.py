@@ -38,7 +38,7 @@ class PathManager:
                     vkd = self.extend_vkd(tn.sh, vkd)
                     if vkd:
                         name = f'{self.tnode.name}-{key}'
-                        self.dic[name] vkd
+                        self.dic[name] = vkd
 
     def verified_paths(self, sdic):
         valid_paths = {}

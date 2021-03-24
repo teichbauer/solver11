@@ -1,3 +1,5 @@
+2021-03-24->0.167
+- progress in pathmgr.
 2021-03-23->0.166
 - SatNode now holds a class variable .maxnov. And a method: is_top()
 - new class PathManager, an inst of it attached to each tnode, if its
