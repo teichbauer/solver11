@@ -81,7 +81,7 @@ class SatNode:
             if len(tnode.pthmgr.dic) == 0:
                 dels.append(tnode)
             else:
-                higher_vals = [int(k.split('-')][1]) for k in tnode.pthmgr.dic]
+                higher_vals = [int(k.split('-')[1]) for k in tnode.pthmgr.dic]
                 higher_vals_inuse.update(higher_vals)
         # clean-up ch-tnodes, if its pthmgr.dic is empty
         for tnode in dels:
@@ -89,26 +89,25 @@ class SatNode:
             TNode.repo.pop(tnode.name)
         # clean-up higher-chs not being used by any tnode
         self.parent.trim_chs(higher_vals_inuse)
-        x= 1
+        x = 1
 
     def trim_chs(self, used_vals):
-        ''' the chdic keys not in used_vals(a set), will be popped out. if the
-            changed used val-set of parent level, recursiv-call on parent '''
-        s= set(self.chdic.keys())
+        ''' the chdic keys not in used_vals(a set), will be deleted. if this
+            changs used val-set of parent level, recursiv-call on parent '''
+        s = set(self.chdic.keys())
         if s != used_vals:
-            delta= s - used_vals
+            delta = s - used_vals
             for v in delta:
                 tn = self.chdic.pop(v, None)
                 if tn:
                     TNode.repo.pop(tn.name)
             if self.parent:
                 # recursive call of parent.trim_chs
-                higher_vals_inuse= set([])
+                higher_vals_inuse = set([])
                 for tn in self.chdic.values():
-                    vs= [int(k.split('-')][1]) for k in tn.pthmgr.dic]
+                    vs = [int(k.split('-')[1]) for k in tn.pthmgr.dic]
                     higher_vals_inuse.update(vs)
                 self.parent.trim_chs(higher_vals_inuse)
-
 
     def restrict_chs(self):
         ''' for every child C in chdic, check which children of
@@ -118,17 +117,17 @@ class SatNode:
             '''
         if not self.parent:
             return
-        del_tnodes= []
-        hvs= list(self.parent.chdic.keys())
-        htcnt= {hv: 0 for hv in hvs}
+        del_tnodes = []
+        hvs = list(self.parent.chdic.keys())
+        htcnt = {hv: 0 for hv in hvs}
         for tnode in self.chdic.values():
-            tnode.pathdic= {}
+            tnode.pathdic = {}
             for hv in hvs:
-                tn= self.parent.chdic[hv]
+                tn = self.parent.chdic[hv]
                 if tn.check_sat(tnode.hsat, True):
-                    vk12dic= tnode.find_path_vk12dic(tn)
+                    vk12dic = tnode.find_path_vk12dic(tn)
                     if vk12dic:
-                        tnode.pathdic[tn.name]= vk12dic
+                        tnode.pathdic[tn.name] = vk12dic
                         htcnt[hv] += 1
             if len(tnode.pathdic) == 0:
                 del_tnodes.append(tnode)
@@ -138,7 +137,7 @@ class SatNode:
 
         for hv, sm in htcnt.items():
             if sm == 0:
-                t= self.parent.chdic.pop(hv, None)
+                t = self.parent.chdic.pop(hv, None)
                 if t:
                     TNode.repo.pop(t.name, None)
-        x= 1
+        x = 1

@@ -55,6 +55,9 @@ class PathManager:
             vk12 = vk.partial_hit_residue(ksat, bmap)
             if vk12:
                 vk12m.add_vk(vk12)
+        for vk in self.tnode.values():
+            vk12m.add_vk(vk)
+
         if vk12m.valid:
             return vk12m.vkdic
         return None

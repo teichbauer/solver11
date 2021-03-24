@@ -1,3 +1,6 @@
+2021-03-24->0.169
+- pathmgr: extend_vkd: need to also add vks from self.tnode.vkdic!
+- some fixes in satnode
 2021-03-24->0.168
 - pathmgr.dic key is a chain of(concadinated)tn.val joined by '-'
 - progress on pathmgr/chdic management in satnode. restrict_chs will be 
