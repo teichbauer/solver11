@@ -11,9 +11,10 @@ class PathManager:
     #   {<vkey>:<vkdic>,...}, where <vkey> is concadinated key(hp isnt top):
     #   <tnode.val>-<tn.val>-<tn.val>... Here last tn is top-level
     #   if hp is top: <tnode.ch-val>-<hp.chdic[v].name>.
-    # and <vkdic> is the result of mergings of all tn.vkdic along the way, if
-    # the merging is validated. If merging not validated, then this
-    # tnode.pthmgr.dic entry will not be created.
+    # and <vkdic> is the result of mergings of all tn.vkdic along the way,
+    # including self.tnode.vkdic. if the merging is validated.
+    # If merging not validated, then this tnode.pthmgr.dic entry
+    # will not be created.
     # -------------------------------------------------------------------------
 
     def __init__(self, tnode):
@@ -29,7 +30,6 @@ class PathManager:
                         name = f'{self.tnode.val}-{tn.val}'
                         self.dic[name] = vk12dic
         else:  # holder.parent is not top-level snode, its tnodes has pthmgr
-            vkd_lst = []
             for va, tn in hp_chdic.items():
                 sdic = tn.sh.reverse_sdic(tnode.hsat)
                 pths = tn.pthmgr.verified_paths(sdic)
@@ -55,7 +55,7 @@ class PathManager:
             vk12 = vk.partial_hit_residue(ksat, bmap)
             if vk12:
                 vk12m.add_vk(vk12)
-        for vk in self.tnode.values():
+        for vk in self.tnode.vkdic.values():
             vk12m.add_vk(vk)
 
         if vk12m.valid:

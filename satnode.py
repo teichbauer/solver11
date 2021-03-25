@@ -41,17 +41,7 @@ class SatNode:
         # after tx_vkm.morph, tx_vkm only has (.vkdic) vk3 left, if any
         # and tx_vkm.nov decreased by 3, used in spawning self.next
         self.chdic = self.tx_vkm.morph(self)
-        # self.restrict_chs()
         self.make_paths()
-        if self.debug:
-            vk3cnt = len(self.vkm.vkdic)
-            restvk3cnt = len(self.tx_vkm.vkdic)
-            vk12cnt = len(self.vk12dic)
-            chvals = list(self.chdic.keys())
-            sharray = self.sh.varray
-            m = f'sn{self.nov}: {vk3cnt} -> {restvk3cnt}: {vk12cnt}, '
-            m += f'{choice["bestkey"]}, chs:{chvals}, sh:{sharray}'
-            print(m)
         x = 1
     # end of def prepare(self):
 
@@ -108,36 +98,3 @@ class SatNode:
                     vs = [int(k.split('-')[1]) for k in tn.pthmgr.dic]
                     higher_vals_inuse.update(vs)
                 self.parent.trim_chs(higher_vals_inuse)
-
-    def restrict_chs(self):
-        ''' for every child C in chdic, check which children of
-            self.satnode.chdic, are compatible with C, (allows vksat)
-            build a pvs containing child-keys of the children that are
-            compatible, set chdic[val].pvs
-            '''
-        if not self.parent:
-            return
-        del_tnodes = []
-        hvs = list(self.parent.chdic.keys())
-        htcnt = {hv: 0 for hv in hvs}
-        for tnode in self.chdic.values():
-            tnode.pathdic = {}
-            for hv in hvs:
-                tn = self.parent.chdic[hv]
-                if tn.check_sat(tnode.hsat, True):
-                    vk12dic = tnode.find_path_vk12dic(tn)
-                    if vk12dic:
-                        tnode.pathdic[tn.name] = vk12dic
-                        htcnt[hv] += 1
-            if len(tnode.pathdic) == 0:
-                del_tnodes.append(tnode)
-        for tnode in del_tnodes:
-            self.chdic.pop(tnode.val, None)
-            TNode.repo.pop(tnode.name, None)
-
-        for hv, sm in htcnt.items():
-            if sm == 0:
-                t = self.parent.chdic.pop(hv, None)
-                if t:
-                    TNode.repo.pop(t.name, None)
-        x = 1

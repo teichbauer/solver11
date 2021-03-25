@@ -1,3 +1,7 @@
+2021-03-24->0.170
+- minor fix in  pathmgr. Clean up satnode.
+- pathmgr works. May be better to render vkdic with node12, before save the path
+  For some paths can be removed on this stage, early-rejection?
 2021-03-24->0.169
 - pathmgr: extend_vkd: need to also add vks from self.tnode.vkdic!
 - some fixes in satnode
