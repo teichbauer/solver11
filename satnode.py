@@ -41,7 +41,7 @@ class SatNode:
         # after tx_vkm.morph, tx_vkm only has (.vkdic) vk3 left, if any
         # and tx_vkm.nov decreased by 3, used in spawning self.next
         self.chdic = self.tx_vkm.morph(self)
-        self.make_paths()
+        self.make_paths(len(self.tx_vkm.vkdic) == 0)
         x = 1
     # end of def prepare(self):
 
@@ -60,14 +60,14 @@ class SatNode:
             self.next = SatNode(self, self.next_sh.clone(), self.tx_vkm)
         return self.next
 
-    def make_paths(self):
+    def make_paths(self, final):
         if not self.parent:
             return
         # collect higher-chs, and the ones being refed by this snode
         higher_vals_inuse = set([])
         dels = []   # for collecting tnode with no path
         for val, tnode in self.chdic.items():
-            tnode.pthmgr = PathManager(tnode)
+            tnode.pthmgr = PathManager(tnode, final)
             if len(tnode.pthmgr.dic) == 0:
                 dels.append(tnode)
             else:

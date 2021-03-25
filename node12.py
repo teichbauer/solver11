@@ -5,12 +5,12 @@ from satholder import SatHolder
 
 
 class Node12:
-    def __init__(self, name, parent, sh, hsat):
+    def __init__(self, val, parent, sh, hsat, vkd=None):
         self.parent = parent
         self.hsat = hsat
         self.nov = sh.ln
-        self.vkmgr = VK12Manager(self.nov)
-        self.name = name
+        self.vkmgr = VK12Manager(self.nov, vkd)
+        self.val = val
         self.chdic = {}
         self.sh = sh
         self.valid = True
@@ -61,6 +61,7 @@ class Node12:
                 tsat1[var1] = oppo_binary(value1)
                 self.tsat = [tsat0, tsat1]
                 return True
+        return False
 
     def add_filtered_vkdic(self, vkdic, tsh):
         for kn, vk in vkdic.items():
@@ -74,7 +75,7 @@ class Node12:
         return self.valid
 
     def remove_me(self):
-        self.parent.chdic.pop(self.name, None)
+        self.parent.chdic.pop(self.val, None)
         if self.parent.__class__.__name__ == 'Node12' and \
                 len(self.parent.chdic) == 0:
             self.parent.remove_me()
@@ -91,7 +92,7 @@ class Node12:
                 sat.update(self.hsat)
                 if isinstance(self.parent, Node12):
                     self.parent.collect_sat(sat)
-                else:  # self.parent is EndNodeManager
+                else:  # parent is PathManager with a class-var(list).sats
                     self.parent.sats.append(sat)
 
     def spawn(self):
@@ -106,9 +107,9 @@ class Node12:
         self.tail_varray = self.sh.spawn_tail(self.bvk.nob)
         self.next_sh = SatHolder(self.tail_varray[:])
         self.sh.cut_tail(self.bvk.nob)
-        vkmgr = VK12Manager(self.nov, tx_vkdic)
 
-        self.chdic = vkmgr.morph(self, self.bvk.nob)
+        # generate dic of Node12 instances, keyed by val
+        self.chdic = self.vkmgr.morph(self, self.bvk.nob)
 
         vals = list(self.chdic.keys())
         for val in vals:

@@ -8,7 +8,7 @@ class VK12Manager:
         self.nov = nov
         self.reset()  # set vkdic, bdic, kn1s, kn2s
         if vkdic and len(vkdic) > 0:
-            self.vkdic = vkdic
+            self.add_vkdic(vkdic)
 
     def reset(self):
         self.bdic = {}
@@ -170,7 +170,7 @@ class VK12Manager:
                     for vk in vks:
                         sub_vk12dic[vk.kname] = vk
             node = n12.__class__(
-                val,                    # val as node.name
+                val,                    # node12.val = val
                 n12,                    # n12 is parent-node
                 n12.next_sh,            # sh
                 n12.sh.get_sats(val))   # val turns to hsat based on topbits

@@ -1,8 +1,11 @@
 from basics import verify_sat
 from vk12mgr import VK12Manager
+from node12 import Node12
 
 
 class PathManager:
+    sats = []
+    limit = 10
     # -------------------------------------------------------------------------
     # Each tnode, if its holder-snode isn't top-level(holder.parent != None)
     #   Each holder-parent(hp) has .chdic:{<v>:<tn>,..}, if hp isn't top-level,
@@ -17,7 +20,7 @@ class PathManager:
     # will not be created.
     # -------------------------------------------------------------------------
 
-    def __init__(self, tnode):
+    def __init__(self, tnode, finalize=False):
         # constructed only for tnode, with its holder being non-top level
         self.tnode = tnode
         self.dic = {}
@@ -35,10 +38,26 @@ class PathManager:
                 pths = tn.pthmgr.verified_paths(sdic)
 
                 for key, vkd in pths.items():
-                    vkd = self.extend_vkd(tn.sh, vkd)
-                    if vkd:
-                        name = f'{self.tnode.val}-{key}'
-                        self.dic[name] = vkd
+                    vkdic = self.extend_vkd(tn.sh, vkd)
+                    if vkdic:
+                        if finalize:
+                            n12 = Node12(
+                                self.tnode.val,
+                                self,
+                                self.tnode.sh,
+                                self.tnode.hsat,
+                                vkdic
+                            )
+                            if n12.check_done():
+                                n12.collect_sat()
+                            else:
+                                n12.spawn()
+                        else:
+                            name = f'{self.tnode.val}-{key}'
+                            self.dic[name] = vkdic
+
+    def add_sat(self, tsat):
+        pass
 
     def verified_paths(self, sdic):
         valid_paths = {}

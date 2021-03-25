@@ -1,3 +1,9 @@
+2021-03-25->0.171
+- node12.name -> .val, + other changes.
+- PathManager constructor has a finalize optional param, if true,
+  will create a node12 and solve it -> <class-var>.sats
+- minor change in vk12mgr
+- document analysis in docs/cfg12-55-analysis.txt
 2021-03-24->0.170
 - minor fix in  pathmgr. Clean up satnode.
 - pathmgr works. May be better to render vkdic with node12, before save the path
