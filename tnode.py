@@ -145,7 +145,7 @@ class TNode:
         for ch in psatnode.chdic.values():
             candi = [ch['hsat'], hsat]
 
-    def find_path_vk12dic(self, ptnode):
+    def find_path_vk12m(self, ptnode):
         bmap = ptnode.sh.bit_tx_map(self.sh)
         ksat = ptnode.sh.reverse_sdic(self.hsat)  # ? not used
         vk12m = VK12Manager(self.holder.nov)
@@ -157,7 +157,4 @@ class TNode:
         # adding all vks from self.vkdic to vk12m
         for kn, vk in self.vkdic.items():
             vk12m.add_vk(vk)
-
-        if vk12m.valid:
-            return vk12m.vkdic
-        return None
+        return vk12m

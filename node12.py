@@ -77,11 +77,11 @@ class Node12:
                 break
         return self.valid
 
-    def remove_me(self):
-        self.parent.chdic.pop(self.val, None)
-        if self.parent.__class__.__name__ == 'Node12' and \
-                len(self.parent.chdic) == 0:
-            self.parent.remove_me()
+    # def remove_me(self):
+    #     self.parent.chdic.pop(self.val, None)
+    #     if self.parent.__class__.__name__ == 'Node12' and \
+    #             len(self.parent.chdic) == 0:
+    #         self.parent.remove_me()
 
     def collect_sat(self, tsat=None):
         if tsat == None:
@@ -121,5 +121,5 @@ class Node12:
             else:
                 self.chdic[val].spawn()
 
-        if len(self.chdic) == 0:
-            self.remove_me()
+        # if len(self.chdic) == 0:
+        #     self.remove_me()

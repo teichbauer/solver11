@@ -28,51 +28,49 @@ class PathManager:
         if tnode.holder.parent.is_top():  # holder.parent: a top-level snode
             for va, tn in hp_chdic.items():
                 if tn.check_sat(tnode.hsat, True):
-                    vk12dic = tnode.find_path_vk12dic(tn)
-                    if vk12dic:
-                        name = f'{self.tnode.val}-{tn.val}'
-                        self.dic[name] = vk12dic
+                    vk12m = tnode.find_path_vk12m(tn)
+                    if vk12m.valid:
+                        name = f'{tnode.val}-{tn.val}'
+                        self.dic[name] = vk12m
         else:  # holder.parent is not top-level snode, its tnodes has pthmgr
             for va, tn in hp_chdic.items():
                 sdic = tn.sh.reverse_sdic(tnode.hsat)
                 pths = tn.pthmgr.verified_paths(sdic)
 
-                for key, vkd in pths.items():
-                    # vkdic = self.extend_vkd(tn.sh, vkd)
-                    vkm = self.extend_vkd(tn.sh, vkd)
-                    if vkm.valid:
+                for key, vkm in pths.items():
+                    vk12m = self.extend_vkm(tn.sh, vkm)
+                    if vk12m.valid:
                         if finalize:
                             n12 = Node12(
-                                self.tnode.val,
+                                tnode.val,
                                 self,
-                                self.tnode.sh,
-                                self.tnode.hsat,
-                                vkm
-                                # vkdic
+                                tnode.sh.clone(),
+                                tnode.hsat,  # sdic?
+                                vk12m
                             )
                             if n12.check_done():
                                 n12.collect_sat()
                             else:
                                 n12.spawn()
                         else:
-                            name = f'{self.tnode.val}-{key}'
-                            self.dic[name] = vkm
+                            name = f'{tnode.val}-{key}'
+                            self.dic[name] = vk12m
 
     def add_sat(self, tsat):
         pass
 
     def verified_paths(self, sdic):
         valid_paths = {}
-        for path_name, vkd in self.dic.items():
-            if verify_sat(vkd, sdic):
-                valid_paths[path_name] = vkd
+        for path_name, vkm in self.dic.items():
+            if verify_sat(vkm.vkdic, sdic):
+                valid_paths[path_name] = vkm
         return valid_paths
 
-    def extend_vkd(self, src_sh, src_vkd):
+    def extend_vkm(self, src_sh, src_vkm):
         bmap = src_sh.bit_tx_map(self.tnode.sh)
         ksat = src_sh.reverse_sdic(self.tnode.hsat)
         vk12m = VK12Manager(len(bmap))
-        for kn, vk in src_vkd.items():
+        for kn, vk in src_vkm.vkdic.items():
             vk12 = vk.partial_hit_residue(ksat, bmap)
             if vk12:
                 vk12m.add_vk(vk12)
