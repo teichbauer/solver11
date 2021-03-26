@@ -5,11 +5,14 @@ from satholder import SatHolder
 
 
 class Node12:
-    def __init__(self, val, parent, sh, hsat, vkd=None):
+    def __init__(self, val, parent, sh, hsat, vkm=None):
         self.parent = parent
         self.hsat = hsat
         self.nov = sh.ln
-        self.vkmgr = VK12Manager(self.nov, vkd)
+        if vkm:
+            self.vkmgr = vkm
+        else:
+            self.vkmgr = VK12Manager(self.nov)
         self.val = val
         self.chdic = {}
         self.sh = sh

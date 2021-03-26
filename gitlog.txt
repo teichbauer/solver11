@@ -1,3 +1,6 @@
+2021-03-15->0.172
+- progress on node12.
+- pathmgr.extend_vkd now returns vk12m, no more vkd
 2021-03-25->0.171
 - node12.name -> .val, + other changes.
 - PathManager constructor has a finalize optional param, if true,

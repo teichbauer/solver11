@@ -169,12 +169,14 @@ class VK12Manager:
                     vks = tdic[cvr]
                     for vk in vks:
                         sub_vk12dic[vk.kname] = vk
+            vkm = VK12Manager(self.nov, sub_vk12dic)
             node = n12.__class__(
                 val,                    # node12.val = val
                 n12,                    # n12 is parent-node
                 n12.next_sh,            # sh
-                n12.sh.get_sats(val))   # val turns to hsat based on topbits
-            node.add_vkdic_and_checkdone(sub_vk12dic)
+                n12.sh.get_sats(val),   # val turns to hsat based on topbits
+                vkm)
+            # node.add_vkdic_and_checkdone(sub_vk12dic)
             # vkmgr adds sub_vk12dic, it can turn invalid
             if node.vkmgr.valid:
                 chs[val] = node

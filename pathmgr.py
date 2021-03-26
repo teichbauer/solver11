@@ -38,15 +38,17 @@ class PathManager:
                 pths = tn.pthmgr.verified_paths(sdic)
 
                 for key, vkd in pths.items():
-                    vkdic = self.extend_vkd(tn.sh, vkd)
-                    if vkdic:
+                    # vkdic = self.extend_vkd(tn.sh, vkd)
+                    vkm = self.extend_vkd(tn.sh, vkd)
+                    if vkm.valid:
                         if finalize:
                             n12 = Node12(
                                 self.tnode.val,
                                 self,
                                 self.tnode.sh,
                                 self.tnode.hsat,
-                                vkdic
+                                vkm
+                                # vkdic
                             )
                             if n12.check_done():
                                 n12.collect_sat()
@@ -54,7 +56,7 @@ class PathManager:
                                 n12.spawn()
                         else:
                             name = f'{self.tnode.val}-{key}'
-                            self.dic[name] = vkdic
+                            self.dic[name] = vkm
 
     def add_sat(self, tsat):
         pass
@@ -69,14 +71,14 @@ class PathManager:
     def extend_vkd(self, src_sh, src_vkd):
         bmap = src_sh.bit_tx_map(self.tnode.sh)
         ksat = src_sh.reverse_sdic(self.tnode.hsat)
-        vk12m = VK12Manager(self.tnode.holder.nov)
+        vk12m = VK12Manager(len(bmap))
         for kn, vk in src_vkd.items():
             vk12 = vk.partial_hit_residue(ksat, bmap)
             if vk12:
                 vk12m.add_vk(vk12)
         for vk in self.tnode.vkdic.values():
             vk12m.add_vk(vk)
-
-        if vk12m.valid:
-            return vk12m.vkdic
-        return None
+        return vk12m
+        # if vk12m.valid:
+        #     return vk12m.vkdic
+        # return None
