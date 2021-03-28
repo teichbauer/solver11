@@ -1,3 +1,5 @@
+2021-03-28->0.176
+- fix in vk12m, solver11
 2021-03-28->0.175
 - fix a bug in vkmgr/morph(line 86): when building sub_vk12dic, use vk.clone()
   in staed of vk. For when constructing tnode, the vk may drop its bit. And this

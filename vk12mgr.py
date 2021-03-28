@@ -118,7 +118,7 @@ class VK12Manager:
                     self.info[vk.kname] = msg
                     print(msg)
                     # remove pvk
-                    self.remove_vk2(pvk.name)
+                    self.remove_vk2(pvk.kname)
                     # add pvk back as vk1, after dropping bs[1]
                     pvk.drop_bit(bs[0])
                     return self.add_vk(pvk)

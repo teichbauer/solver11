@@ -83,6 +83,10 @@ class VKManager:
                 if val in cvr:  # touched kn/kv does have outside bit
                     vks = tdic[cvr]
                     for vk in vks:
+                        # when added to tnode.vkm, a vk may drop bit for a
+                        # specific val. But that bit-drop maybe wrong for
+                        # other val. clone it to preserve that vk
+                        # in snode.vk12dic
                         sub_vk12dic[vk.kname] = vk.clone()
             # print(f'child-{val}')
             tnode = TNode(sub_vk12dic, snode, val)

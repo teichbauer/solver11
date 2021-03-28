@@ -26,7 +26,7 @@ def process(cnfname):
     SatNode.maxnov = sh.ln
 
     sn = SatNode(None, sh, vkm)
-    while sn.done:
+    while not sn.done:
         sn = sn.spawn()
     return sn.solve()
 
