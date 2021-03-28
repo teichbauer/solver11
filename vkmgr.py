@@ -83,7 +83,7 @@ class VKManager:
                 if val in cvr:  # touched kn/kv does have outside bit
                     vks = tdic[cvr]
                     for vk in vks:
-                        sub_vk12dic[vk.kname] = vk
+                        sub_vk12dic[vk.kname] = vk.clone()
             # print(f'child-{val}')
             tnode = TNode(sub_vk12dic, snode, val)
             if tnode.vkm.valid:
