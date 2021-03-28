@@ -1,3 +1,8 @@
+2021-03-27->0.174
+- use vk12mgr in tnode, get rid of prev methods in tnode(proc_vk1s, proc_vk2s,
+  check_state, remove_kn and sort12, set-bmap)
+- get rid of endnodemanager, candinode
+- get rid of tnode.state, use tnode.vkm.valid
 2021-03-26->0.173
 - minor change in node12
 - pathmgr: the value in .dic is no more vkdic, but a vk12mgr

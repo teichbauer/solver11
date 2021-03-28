@@ -1,7 +1,7 @@
 from basics import topbits, print_json
 from satholder import SatHolder
 from TransKlauseEngine import TxEngine
-from endnodemgr import EndNodeManager
+# from endnodemgr import EndNodeManager
 from tnode import TNode
 from pathmgr import PathManager
 
@@ -55,7 +55,8 @@ class SatNode:
             self.done = True
             return None
         if len(self.tx_vkm.vkdic) == 0:
-            self.next = EndNodeManager(self, self.next_sh)
+            pass
+            # self.next = EndNodeManager(self, self.next_sh)
         else:
             self.next = SatNode(self, self.next_sh.clone(), self.tx_vkm)
         return self.next

@@ -26,9 +26,8 @@ def process(cnfname):
     SatNode.maxnov = sh.ln
 
     sn = SatNode(None, sh, vkm)
-    while sn.__class__.__name__ == 'SatNode':  # if EndNodeManager: stop
+    while sn.done:
         sn = sn.spawn()
-    # sn is of class EndNodeManager now
     return sn.solve()
 
 

@@ -1,7 +1,7 @@
 from basics import topbits_coverages, print_json
 from vklause import VKlause
 from tnode import TNode
-from endnodemgr import EndNodeManager
+# from endnodemgr import EndNodeManager
 
 
 class VKManager:
@@ -86,7 +86,7 @@ class VKManager:
                         sub_vk12dic[vk.kname] = vk
             # print(f'child-{val}')
             tnode = TNode(sub_vk12dic, snode, val)
-            if tnode.state == 0:
+            if tnode.vkm.valid:
                 TNode.repo[tnode.name] = tnode
                 chs[val] = tnode
         # re-make self.bdic, based on updated vkdic (now all 3-bit vks)
