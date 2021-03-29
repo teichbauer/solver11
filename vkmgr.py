@@ -96,7 +96,6 @@ class VKManager:
         # re-make self.bdic, based on updated vkdic (now all 3-bit vks)
         self.make_bdic()  # bdic made here will be used for .next/bestchoice
         return chs  # for making chdic with tnodes
-
     # enf of def morph()
 
     def bestchoice(self):
@@ -172,3 +171,4 @@ class VKManager:
             'bits': best_bits
         }
         return result
+    # end of def bestchoice(self):

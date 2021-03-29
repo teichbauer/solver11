@@ -2,6 +2,7 @@ from basics import topbits, filter_sdic, oppo_binary
 from TransKlauseEngine import TxEngine
 from vk12mgr import VK12Manager
 from satholder import SatHolder
+from tnode import TNode
 
 
 class Node12:
@@ -16,12 +17,7 @@ class Node12:
         self.val = val
         self.chdic = {}
         self.sh = sh
-        self.valid = True
-
-    def add_vkdic_and_checkdone(self, vkdic):
-        self.vkmgr.add_vkdic(vkdic)
-        if self.vkmgr.valid:
-            self.done = self.check_done()
+        self.done = self.check_done()
 
     def check_done(self):
         if self.nov == 0:
@@ -66,23 +62,6 @@ class Node12:
                 return True
         return False
 
-    def add_filtered_vkdic(self, vkdic, tsh):
-        for kn, vk in vkdic.items():
-            tvk = vk.partial_hit_residue(self.hsat, tsh, self.nov)
-            if tvk and self.vkmgr.add_vk(tvk):
-                # print(f'{kn} added')
-                pass
-            if not self.vkmgr.valid:
-                self.valid = False
-                break
-        return self.valid
-
-    # def remove_me(self):
-    #     self.parent.chdic.pop(self.val, None)
-    #     if self.parent.__class__.__name__ == 'Node12' and \
-    #             len(self.parent.chdic) == 0:
-    #         self.parent.remove_me()
-
     def collect_sat(self, tsat=None):
         if tsat == None:
             self.collect_sat(self.tsat)
@@ -96,7 +75,11 @@ class Node12:
                 if isinstance(self.parent, Node12):
                     self.parent.collect_sat(sat)
                 else:  # parent is PathManager with a class-var(list).sats
-                    self.parent.sats.append(sat)
+                    pthnames = self.path_name[:]
+                    while len(pthname) > 0:
+                        name = pthnames.pop(0)
+                        hsat = TNode.repo[name].hsat
+                        # self.parent.sats.append(sat)
 
     def spawn(self):
         self.bvk = self.vkmgr.pick_bvk()

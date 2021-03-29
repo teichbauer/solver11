@@ -1,3 +1,8 @@
+2021-03-29->0.179
+- node12.done, replacing .valid, get rid of add_filtered_vkdic/remove_me
+- node12.collect_sat using pathname TBD: not done yet
+- pathmgr.dic key now is a tuple of tnode names: higher nov behinde
+- vk12m.clone refactored: more efficient
 2021-03-28->0.178
 - refactored pathmgr.extend_vkm
 2021-03-28->0.177

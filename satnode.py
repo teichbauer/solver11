@@ -72,7 +72,7 @@ class SatNode:
             if len(tnode.pthmgr.dic) == 0:
                 dels.append(tnode)
             else:
-                higher_vals = [int(k.split('-')[1]) for k in tnode.pthmgr.dic]
+                higher_vals = [k[1] for k in tnode.pthmgr.dic]
                 higher_vals_inuse.update(higher_vals)
         # clean-up ch-tnodes, if its pthmgr.dic is empty
         for tnode in dels:

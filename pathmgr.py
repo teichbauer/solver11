@@ -30,8 +30,9 @@ class PathManager:
                 if tn.check_sat(tnode.hsat, True):
                     vk12m = tnode.find_path_vk12m(tn)
                     if vk12m.valid:
-                        name = f'{tnode.val}-{tn.val}'
-                        self.dic[name] = vk12m
+                        # names = [f'{tnode.val}', f'{tn.val}']
+                        names = [tnode.name, tn.name]
+                        self.dic[tuple(names)] = vk12m
         else:  # holder.parent is not top-level snode, its tnodes has pthmgr
             for va, tn in hp_chdic.items():
                 sdic = tn.sh.reverse_sdic(tnode.hsat)
@@ -40,6 +41,7 @@ class PathManager:
                 for key, vkm in pths.items():
                     vk12m = self.extend_vkm(tn.sh, vkm)
                     if vk12m.valid:
+                        path_name = list(key)
                         if finalize:
                             n12 = Node12(
                                 tnode.val,
@@ -48,13 +50,14 @@ class PathManager:
                                 tnode.hsat,  # sdic?
                                 vk12m
                             )
+                            n12.path_name = path_name
                             if n12.check_done():
                                 n12.collect_sat()
                             else:
                                 n12.spawn()
                         else:
-                            name = f'{tnode.val}-{key}'
-                            self.dic[name] = vk12m
+                            path_name.insert(0, tnode.name)
+                            self.dic[tuple(path_name)] = vk12m
 
     def add_sat(self, tsat):
         pass

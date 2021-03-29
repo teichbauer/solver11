@@ -4,9 +4,11 @@ from TransKlauseEngine import TxEngine
 
 
 class VK12Manager:
-    def __init__(self, nov, vkdic=None):
+    def __init__(self, nov, vkdic=None, raw=False):
         self.nov = nov
-        self.reset()  # set vkdic, bdic, kn1s, kn2s
+        self.valid = True  # no sat possible/total hit-blocked
+        if not raw:
+            self.reset()  # set vkdic, bdic, kn1s, kn2s
         if vkdic and len(vkdic) > 0:
             self.add_vkdic(vkdic)
 
@@ -15,13 +17,16 @@ class VK12Manager:
         self.vkdic = {}
         self.kn1s = []
         self.kn2s = []
-        self.valid = True  # no sat possible/total hit-blocked
         self.info = {}
 
     def clone(self):
-        vk12m = VK12Manager(self.nov)
-        for vk in self.vkdic.values():
-            vk12m.add_vk(vk.clone())
+        # self.valid must be True. Construct with: no vkdic, raw=True(no reset)
+        vk12m = VK12Manager(self.nov, None, True)
+        vk12m.bdic = {k: lst[:] for k, lst in self.bdic.items()}
+        vk12m.kn1s = self.kn1s[:]
+        vk12m.kn2s = self.kn2s[:]
+        vk12m.info = {}  # info starts fresh, no taking from self.info
+        vk12m.vkdic = {kn: vk.clone() for kn, vk in self.vkdic.items()}
         return vk12m
 
     def add_vkdic(self, vkdic):

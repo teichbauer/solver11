@@ -4,8 +4,8 @@ from vk12mgr import VK12Manager
 
 
 class TNode:
-    # repo holds all tnode, under its name
-    repo = {}   # {<tnode-name>:<tnode-instance>,...}
+    # class-variable repo holds all tnode
+    repo = {}   # {<tnode>.name:<tnode-instance>,...}
 
     def __init__(self, vk12dic, holder_snode, val):
         self.val = val
@@ -22,8 +22,9 @@ class TNode:
 
     def find_path_vk12m(self, ptnode):
         bmap = ptnode.sh.bit_tx_map(self.sh)
-        ksat = ptnode.sh.reverse_sdic(self.hsat)  # ? not used
-        vk12m = self.vkm.clone()
+        # bit-names(sh) of self.vkm.vk to that of parent-level bit-names(sh)
+        ksat = ptnode.sh.reverse_sdic(self.hsat)
+        vk12m = self.vkm.clone()  # use a clone, don't touch self.vkm.vks
         # VK12Manager(self.holder.nov)
         # adding all vk-residues from ptnode (vk cut by hsat) to vk12m
         for kn, pvk in ptnode.vkm.vkdic.items():
