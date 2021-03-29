@@ -69,14 +69,11 @@ class PathManager:
     def extend_vkm(self, src_sh, src_vkm):
         bmap = src_sh.bit_tx_map(self.tnode.sh)
         ksat = src_sh.reverse_sdic(self.tnode.hsat)
-        vk12m = VK12Manager(len(bmap))
+        vk12m = self.tnode.vkm.clone()
         for kn, vk in src_vkm.vkdic.items():
             vk12 = vk.partial_hit_residue(ksat, bmap)
             if vk12:
                 vk12m.add_vk(vk12)
-        for vk in self.tnode.vkdic.values():
-            vk12m.add_vk(vk)
+                if not vk12m.valid:
+                    break
         return vk12m
-        # if vk12m.valid:
-        #     return vk12m.vkdic
-        # return None
