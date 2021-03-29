@@ -39,8 +39,7 @@ class VK12Manager:
         bit = vk.bits[0]
         knames = self.bdic.setdefault(bit, [])
         # kns for loop usage. can't use knames directly, for knames may change
-        kns = knames[:]
-        kns = self.bdic[bit][:]
+        kns = knames[:]  # kns for loop:can't use knames, for it may change.
         for kn in kns:
             if kn in self.kn1s:
                 if self.vkdic[kn].dic[bit] != vk.dic[bit]:

@@ -1,3 +1,5 @@
+2021-03-28->0.177
+- minor optimization in tnode and vk12m.
 2021-03-28->0.176
 - fix in vk12m, solver11
 2021-03-28->0.175

@@ -30,7 +30,6 @@ class TNode:
             vk12 = pvk.partial_hit_residue(ksat, bmap)
             if vk12:
                 vk12m.add_vk(vk12)
-        # adding all vks from self.vkdic to vk12m
-        # for kn, vk in self.vkdic.items():
-            # vk12m.add_vk(vk)
+                if not vk12m.valid:
+                    break
         return vk12m
