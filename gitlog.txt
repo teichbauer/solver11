@@ -1,3 +1,6 @@
+2021-03-29->0.181
+- config1.json generated 0 sat?
+- found issue: on pathmgr:35, should process finalize == True case! TBD
 2021-03-29->0.180
 - node12.collect_sat implemented.
 - snode: done == final: self.tx_vkm.vkdic is empty.
