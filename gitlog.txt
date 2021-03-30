@@ -1,3 +1,7 @@
+2021-03-30->0.182
+- fix the issue found for config1.json, where the tree is so shalow that the
+  final occurs at level-1 (parent is top-level). Now config1.json get its sat.
+- written doc0.txt
 2021-03-29->0.181
 - config1.json generated 0 sat?
 - found issue: on pathmgr:35, should process finalize == True case! TBD

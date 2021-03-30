@@ -1,0 +1,58 @@
+3SAT means, a boolean function F of boolean variable x1, x2, ..., xn:
+  F  = f(x1, x2, ..., xn)
+     = <clause-of-3-vars> AND <clause-of-3-vars> AND ...  
+which can also be written as (AND -> multiply, OR -> addition)
+  F = (<clause>)(<clause>)(<clause>)..
+  
+where each <clause>: (a OR b OR c) or be written as (a + b + c).
+here a, b and c are 3-combination of (x1, ¬x1, x2, ¬x2, x3, ¬x3, ..).
+
+Restriction here:
+in a clause, a variable x and its negation ¬x cannot be in a clause, as in
+    (x1 + x2 + ¬x1)
+Because this would represent a "Truth"-tautology (always true)
+
+Such a F is called 3-SAT expression/function. Now for such a F
+
+  F = f(x1, x2, .., xn)
+
+to check/find values-set of (x1=v1, x2=v2, ..., xn=vn)
+so that F = true, will need 2 ** n (exponential), or O(2**n) complexity.
+
+This problem is proven to be NP-complete.
+
+Those are the rules about 3 SAT-clause. 
+-------------------------------------------
+I break F into several sub-Fs
+
+    F = (G1 + G2 + ... + Gk)F1                 (f1)
+    
+where k <= 7. And each Gm is a 1-/2-SAT expression, with all clauses being
+1-/2-sat clauses: (a + b) or (c). And F1 is a new(reduced) 3-sat function.
+For i in [1..k]
+
+    Gi = (1-/2-clause)(1-/2-clause)..(1-/2-clause)
+
+In processing 1-sat/2-sat clauses, some simplication-rules may apply:
+
+rule-1.
+for 2 clauses (x + ¬y)y: since
+   (x + ¬y)y  = xy                  
+so the 2 clauses become x and y:
+
+   g = (x + ¬y)y   =   xy                      (r1)
+
+rule-2.
+(x + y)y -> y, the first clause (x + y) can be omitted
+
+    g = (x + y)y = y                           (r2)
+    
+rule-3.
+(x + y)(x + y) = (x + y) this is simple to get
+
+    g = (x + y)(x + y) = (x + y)               (r3)
+    
+rule-4.
+    Gi = x( ¬x) = false ("False"-tautology)    (r4)
+here the Gi can be eliminated
+    

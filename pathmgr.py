@@ -20,7 +20,7 @@ class PathManager:
     # will not be created.
     # -------------------------------------------------------------------------
 
-    def __init__(self, tnode, finalize=False):  # snode.done==finalize
+    def __init__(self, tnode, final=False):  # snode.done==final
         # constructed only for tnode, with its holder being non-top level
         self.tnode = tnode
         self.dic = {}
@@ -30,9 +30,12 @@ class PathManager:
                 if tn.check_sat(tnode.hsat, True):
                     vk12m = tnode.find_path_vk12m(tn)
                     if vk12m.valid:
-                        # names = [f'{tnode.val}', f'{tn.val}']
-                        names = [tnode.name, tn.name]
-                        self.dic[tuple(names)] = vk12m
+                        names = [tn.name]
+                        if final:
+                            self.finalize(vk12m, names)
+                        else:
+                            names.insert(0, tnode.name)
+                            self.dic[tuple(names)] = vk12m
         else:  # holder.parent is not top-level snode, its tnodes has pthmgr
             for va, tn in hp_chdic.items():
                 sdic = tn.sh.reverse_sdic(tnode.hsat)
@@ -40,24 +43,26 @@ class PathManager:
 
                 for key, vkm in pths.items():
                     vk12m = self.extend_vkm(tn.sh, vkm)
+                    path_name = list(key)
                     if vk12m.valid:
-                        path_name = list(key)
-                        if finalize:
-                            n12 = Node12(
-                                tnode.val,
-                                self,
-                                tnode.sh.clone(),
-                                tnode.hsat,  # sdic?
-                                vk12m
-                            )
-                            n12.path_name = path_name
-                            if n12.check_done():
-                                n12.collect_sat()
-                            else:
-                                n12.spawn()
+                        if final:
+                            self.finalize(vk12m, path_name)
                         else:
                             path_name.insert(0, tnode.name)
                             self.dic[tuple(path_name)] = vk12m
+
+    def finalize(self, vkm, pathname):
+        n12 = Node12(
+            self.tnode.val,
+            self,
+            self.tnode.sh.clone(),
+            self.tnode.hsat,
+            vkm)
+        n12.path_name = pathname
+        if n12.done:
+            n12.collect_sat()
+        else:
+            n12.spawn()
 
     def verified_paths(self, sdic):
         valid_paths = {}
