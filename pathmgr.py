@@ -20,7 +20,7 @@ class PathManager:
     # will not be created.
     # -------------------------------------------------------------------------
 
-    def __init__(self, tnode, finalize=False):
+    def __init__(self, tnode, finalize=False):  # snode.done==finalize
         # constructed only for tnode, with its holder being non-top level
         self.tnode = tnode
         self.dic = {}
@@ -58,9 +58,6 @@ class PathManager:
                         else:
                             path_name.insert(0, tnode.name)
                             self.dic[tuple(path_name)] = vk12m
-
-    def add_sat(self, tsat):
-        pass
 
     def verified_paths(self, sdic):
         valid_paths = {}

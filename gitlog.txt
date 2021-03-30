@@ -1,3 +1,8 @@
+2021-03-29->0.180
+- node12.collect_sat implemented.
+- snode: done == final: self.tx_vkm.vkdic is empty.
+- vk12m.debug controls print
+- run for cfg12-55.json takes 0.018 sec
 2021-03-29->0.179
 - node12.done, replacing .valid, get rid of add_filtered_vkdic/remove_me
 - node12.collect_sat using pathname TBD: not done yet

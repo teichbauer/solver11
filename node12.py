@@ -76,10 +76,10 @@ class Node12:
                     self.parent.collect_sat(sat)
                 else:  # parent is PathManager with a class-var(list).sats
                     pthnames = self.path_name[:]
-                    while len(pthname) > 0:
-                        name = pthnames.pop(0)
-                        hsat = TNode.repo[name].hsat
-                        # self.parent.sats.append(sat)
+                    while len(pthnames) > 0:
+                        tn = TNode.repo[pthnames.pop(0)]
+                        sat.update(tn.hsat)
+                    self.parent.sats.append(sat)
 
     def spawn(self):
         self.bvk = self.vkmgr.pick_bvk()
@@ -103,6 +103,3 @@ class Node12:
                 self.chdic[val].collect_sat()
             else:
                 self.chdic[val].spawn()
-
-        # if len(self.chdic) == 0:
-        #     self.remove_me()

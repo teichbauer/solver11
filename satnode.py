@@ -24,6 +24,9 @@ class SatNode:
     def is_top(self):
         return self.nov == SatNode.maxnov
 
+    def solve(self):
+        return PathManager.sats
+
     def prepare(self):
         choice = self.vkm.bestchoice()
         self.bvk = self.vkm.vkdic[choice['bestkey'][0]]
@@ -41,46 +44,39 @@ class SatNode:
         # after tx_vkm.morph, tx_vkm only has (.vkdic) vk3 left, if any
         # and tx_vkm.nov decreased by 3, used in spawning self.next
         self.chdic = self.tx_vkm.morph(self)
-        self.make_paths(len(self.tx_vkm.vkdic) == 0)
-        x = 1
+        self.make_paths()
     # end of def prepare(self):
 
     def spawn(self):
-        print(f'snode-nov{self.nov}')
-        if self.done:
-            return self.sats
+        # print(f'snode-nov{self.nov}')
         # after morph, vkm.vkdic only have vk3s left, if any
         if len(self.chdic) == 0:
-            self.sats = None
             self.done = True
             return None
-        if len(self.tx_vkm.vkdic) == 0:
-            pass
-            # self.next = EndNodeManager(self, self.next_sh)
         else:
             self.next = SatNode(self, self.next_sh.clone(), self.tx_vkm)
-        return self.next
+            return self.next
 
-    def make_paths(self, final):
-        if not self.parent:
+    def make_paths(self):
+        if not self.parent:  # do nothing for top-level snode
             return
+        self.done = len(self.tx_vkm.vkdic) == 0
         # collect higher-chs, and the ones being refed by this snode
         higher_vals_inuse = set([])
         dels = []   # for collecting tnode with no path
         for val, tnode in self.chdic.items():
-            tnode.pthmgr = PathManager(tnode, final)
+            tnode.pthmgr = PathManager(tnode, self.done)
             if len(tnode.pthmgr.dic) == 0:
                 dels.append(tnode)
             else:
-                higher_vals = [k[1] for k in tnode.pthmgr.dic]
-                higher_vals_inuse.update(higher_vals)
+                high_vals = [int(k[1].split('.')[1]) for k in tnode.pthmgr.dic]
+                higher_vals_inuse.update(high_vals)
         # clean-up ch-tnodes, if its pthmgr.dic is empty
         for tnode in dels:
             self.chdic.pop(tnode.val)
             TNode.repo.pop(tnode.name)
         # clean-up higher-chs not being used by any tnode
         self.parent.trim_chs(higher_vals_inuse)
-        x = 1
 
     def trim_chs(self, used_vals):
         ''' the chdic keys not in used_vals(a set), will be deleted. if this
