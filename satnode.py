@@ -29,6 +29,11 @@ class SatNode:
 
     def prepare(self):
         choice = self.vkm.bestchoice()
+        bvks = choice["bestkey"]
+        print(f'bvk: {bvks}')
+        for kn in bvks:
+            xbvk = self.vkm.vkdic[kn]
+            print(f'{xbvk.dic}')
         self.bvk = self.vkm.vkdic[choice['bestkey'][0]]
         if self.topbits != choice['bits']:  # the same as self.bvk.bits:
             self.tx = TxEngine(self.bvk)
@@ -44,6 +49,8 @@ class SatNode:
         # after tx_vkm.morph, tx_vkm only has (.vkdic) vk3 left, if any
         # and tx_vkm.nov decreased by 3, used in spawning self.next
         self.chdic = self.tx_vkm.morph(self)
+        ks = [f'{self.nov}.{k}' for k in self.chdic.keys()]
+        print(f'keys: {ks}')
         self.make_paths()
     # end of def prepare(self):
 

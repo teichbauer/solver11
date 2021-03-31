@@ -1,3 +1,8 @@
+2021-03-31->0.183
+- added some debugging print-out tools
+- vk12m.info is now a list, no more dict, for better collecting infos
+- vkm.bestchoice: get rid of bitsum comparison, use bits-compare, if
+  len(touched) is the same.
 2021-03-30->0.182
 - fix the issue found for config1.json, where the tree is so shalow that the
   final occurs at level-1 (parent is top-level). Now config1.json get its sat.

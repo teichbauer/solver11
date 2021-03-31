@@ -1,4 +1,4 @@
-from basics import verify_sat
+from basics import verify_sat, display_vkdic
 from vk12mgr import VK12Manager
 from node12 import Node12
 
@@ -6,6 +6,7 @@ from node12 import Node12
 class PathManager:
     sats = []
     limit = 10
+    debug = False
     # -------------------------------------------------------------------------
     # Each tnode, if its holder-snode isn't top-level(holder.parent != None)
     #   Each holder-parent(hp) has .chdic:{<v>:<tn>,..}, if hp isn't top-level,
@@ -23,6 +24,11 @@ class PathManager:
     def __init__(self, tnode, final=False):  # snode.done==final
         # constructed only for tnode, with its holder being non-top level
         self.tnode = tnode
+        print(f'making pth-mgr for {tnode.name}')
+        if tnode.name == '54.0':
+            x = 1
+        elif tnode.name == '54.1':
+            x = 2
         self.dic = {}
         hp_chdic = tnode.holder.parent.chdic
         if tnode.holder.parent.is_top():  # holder.parent: a top-level snode
@@ -40,8 +46,28 @@ class PathManager:
             for va, tn in hp_chdic.items():
                 sdic = tn.sh.reverse_sdic(tnode.hsat)
                 pths = tn.pthmgr.verified_paths(sdic)
-
+                ks = list(pths.keys())
+                if self.debug:
+                    print(f'{len(ks)} path-keys: {ks}')
+                x = 1
                 for key, vkm in pths.items():
+                    # print(f'proccessing {key}')
+                    msg = f'{tnode.name}-{key}'
+                    if msg == "54.1-('57.2', '60.1')":
+                        debug = 1
+                    elif msg == "54.0-('57.3', '60.1')":
+                        debug = 1
+                    elif msg == "54.0-('57.2', '60.7')":
+                        debug = 1
+                    elif msg == "54.7-('57.7', '60.7')":
+                        debug = 1
+                    elif msg == "54.1-('57.1', '60.1')":
+                        debug = 1
+                    if self.debug:
+                        print(f'extend-vkm for {msg}')
+                        display_vkdic(tnode.vkm.vkdic,
+                                      f'vkdic of tnode: {tnode.name}')
+                        display_vkdic(vkm.vkdic, 'adding vkdic')
                     vk12m = self.extend_vkm(tn.sh, vkm)
                     path_name = list(key)
                     if vk12m.valid:

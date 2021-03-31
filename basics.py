@@ -201,3 +201,14 @@ def unite_satdics(s0, s1, extend=False):  # s1 as filter satdic
             elif extend and (b in s1):
                 res[b] = s1[b]
     return res
+
+
+def display_vkdic(vkd, title=None):
+    if title:
+        print(title)
+    kns = list(vkd.keys())
+    kns.sort()
+    for kn in kns:
+        vk = vkd[kn]
+        print(f'{kn}: ' + ordered_dic_string(vk.dic))
+    print('-------------')

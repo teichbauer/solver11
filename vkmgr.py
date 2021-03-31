@@ -107,7 +107,6 @@ class VKManager:
         best_choice = None
         max_tsleng = -1
         max_tcleng = -1
-        best_bitsum = -1  # final ranking: bits sitting higher
         best_bits = None
         kns = set(self.vkdic.keys())  # candidates-set of kn for besy-key
         while len(kns) > 0:
@@ -125,27 +124,18 @@ class VKManager:
                 tsvk = tsvk.intersection(s)
                 tcvk = tcvk.union(s)
 
-            # chc is a tuple of 2 sets: ( {<share-all>}, {<share-any>} )
-            # {<share-all>}: set of kname: of vks shares all kn's bits
-            #      all vk in here must share every bit
-            # {<share-any>}: set of kname: of vks sharing min 1 bit with kn
-            #      it is a super-set of tsvk
             chc = (tsvk, tcvk - tsvk)
             kns -= tsvk  # take kns in tsvk out of candidates-set
             ltsvk = len(tsvk)
             if ltsvk < max_tsleng:
                 continue
             ltcvk = len(tcvk)
-            bsum = sum(bits)
-            # insert into choices list: bigger front
-            # if equal: dont insert
-            # 1: find index of insertion
             if not best_choice:
                 best_choice = chc
                 max_tsleng = ltsvk
                 max_tcleng = ltcvk
                 best_bits = bits
-                best_bitsum = sum(bits)
+                # best_bitsum = sum(bits)
             else:
                 if best_choice[0] == tsvk:
                     continue
@@ -156,15 +146,14 @@ class VKManager:
                 elif max_tsleng == ltsvk:
                     if max_tcleng < ltcvk:
                         replace = True
-                    else:
-                        if bsum > best_bitsum:
+                    elif max_tcleng == ltcvk:
+                        if bits > best_bits:
                             replace = True
                 if replace:
                     best_choice = chc
                     max_tsleng = ltsvk
                     max_tcleng = ltcvk
                     best_bits = bits
-                    best_bitsum = bsum
         result = {
             'bestkey': tuple(sorted(list(best_choice[0]))),
             'touched': best_choice[1],

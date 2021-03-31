@@ -27,6 +27,7 @@ def process(cnfname):
 
     sn = SatNode(None, sh, vkm)
     while not sn.done:
+        print(f'spawning at nov = {sn.nov}')
         sn = sn.spawn()
     return sn.solve()
 
@@ -61,9 +62,9 @@ def work(configfilename, verify=True):
 if __name__ == '__main__':
     global FINAL
     # configfilename = 'cfg100-450.json'
-    # configfilename = 'cfg60-266.json'
+    configfilename = 'cfg60-266.json'
     # configfilename = 'cfg60-262.json'
-    configfilename = 'config1.json'
+    # configfilename = 'config1.json'
     # configfilename = 'cfg12-45.json'
     # configfilename = 'cfg12-55.json'
 
