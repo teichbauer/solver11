@@ -4,8 +4,8 @@ from TransKlauseEngine import TxEngine
 
 
 class VK12Manager:
-    # debug = True
-    debug = False
+    debug = True
+    # debug = False
 
     def __init__(self, nov, vkdic=None, raw=False):
         self.nov = nov

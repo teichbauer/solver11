@@ -1,3 +1,7 @@
+2021-03-31->0.184
+- a difficult fix in vklause.partial_hit_residue
+- still issue(seems) in 54.0-('57.3','60.6'): C0202 {3:0} should hit hsat
+  and this shold set vkm.valid=False?
 2021-03-31->0.183
 - added some debugging print-out tools
 - vk12m.info is now a list, no more dict, for better collecting infos

@@ -94,7 +94,7 @@ class VKlause:
             return hit_cnt == self.nob
 
     def partial_hit_residue(self, sdic, bit_txmap):
-        ''' test self is partially hit by sdic (total hit would be 
+        ''' test self is partially hit by sdic (total hit would be
             a bug: it wouldnt be in the candi-tnode).
             For each bit in self.dic:
                 transfer bit to v = sh(bit):
@@ -126,5 +126,12 @@ class VKlause:
             for bit, value in td.items():
                 if bit not in bit_txmap:
                     raise Exception("bit-tx-map error")
-                tmpd[bit_txmap[bit]] = td[bit]
+                tx_bit = bit_txmap[bit]
+                if tx_bit in sdic:
+                    if td[bit] != sdic[tx_bit]:
+                        return None
+                else:
+                    tmpd[tx_bit] = td[bit]
+            if len(tmpd) == 0:
+                return None
             return VKlause(self.kname, tmpd, len(bit_txmap))
